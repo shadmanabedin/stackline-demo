@@ -13,9 +13,9 @@ const App: FC = () => {
   return (
     <>
       <Header />
-      <div className="flex mt-20 w-fit h-fit gap-5 justify-between p-[16px]">
+      <div className="flex mt-20 gap-5 justify-between mx-[16px]">
         <Sidebar item={mock} />
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-4 grow">
           <Graph item={mock} />
           <Table item={mock} />
         </div>

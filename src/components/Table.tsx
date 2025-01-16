@@ -4,22 +4,37 @@ import { FC } from "react";
 import { ItemComponent } from "../App";
 
 const columnHelper = createColumnHelper<SalesRow>();
+
+const formatMoney = new Intl.NumberFormat('en-US', { // Default, can add in other locales / currencies in the future
+    style: 'currency',
+    currency: 'USD'
+}).format;
+
+const formatDate = (date: string) => {
+  const [year, month, day] = date.split('-');
+  return `${month}-${day}-${Number.parseInt(year) % 100}`
+};
+
 const columns = [
   columnHelper.accessor("weekEnding", {
-    header: () => <span>WEEK ENDING</span>,
-    cell: info => info.getValue(),
+    header: () => "WEEK ENDING",
+    cell: info => formatDate(info.getValue()),
   }),
   columnHelper.accessor("retailSales", {
-    cell: info => info.getValue(),
+    header: () => "RETAIL SALES",
+    cell: info => formatMoney(info.getValue()),
   }),
   columnHelper.accessor("wholesaleSales", {
-    cell: info => info.getValue(),
+    header: () => "WHOLESALE SALES",
+    cell: info => formatMoney(info.getValue()),
   }),
   columnHelper.accessor("unitsSold", {
+    header: () => "UNITS SOLD",
     cell: info => info.getValue(),
   }),
   columnHelper.accessor("retailerMargin", {
-    cell: info => info.getValue(),
+    header: () => "RETAILER MARGIN",
+    cell: info => formatMoney(info.getValue()),
   }),
 ]
 
@@ -30,16 +45,16 @@ const Table: FC<ItemComponent> = ({ item }) => {
     getCoreRowModel: getCoreRowModel()
   })
   return (
-    <div className="bg-white p-5 shadow-lg rounded-lg">
+    <div className="bg-white p-5 shadow rounded-lg">
 
-      <table>
+      <table className="w-full">
         <thead>
           {
             table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
                 {
                   headerGroup.headers.map(header => (
-                    <th key={header.id}>
+                    <th key={header.id} className="px-4 py-2 font-semibold text-sm">
                       {flexRender(header.column.columnDef.header, header.getContext())}
                     </th>
                   ))
@@ -51,9 +66,9 @@ const Table: FC<ItemComponent> = ({ item }) => {
         </thead>
         <tbody>
           {table.getRowModel().rows.map(row => (
-            <tr key={row.id}>
+            <tr key={row.id} className="border-t">
               {row.getVisibleCells().map(cell => (
-                <td key={cell.id}>
+                <td key={cell.id} className="text-gray-500 text-center p-2">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
