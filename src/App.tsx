@@ -1,33 +1,25 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { FC, HTMLAttributes } from 'react';
+import { mock, ProductInformation } from './mocks';
+import Sidebar from './components/Sidebar';
+import Header from './components/Header';
+import Graph from './components/Graph';
+import Table from './components/Table';
 
-function App() {
-  const [count, setCount] = useState(0)
+export type ItemComponent = HTMLAttributes<HTMLDivElement> & {
+  item: ProductInformation;
+};
 
+const App: FC = () => {
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <Header />
+      <div className="flex mt-20 w-fit h-fit gap-5 justify-between p-[16px]">
+        <Sidebar item={mock} />
+        <div className="flex flex-col">
+          <Graph item={mock} />
+          <Table item={mock} />
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
