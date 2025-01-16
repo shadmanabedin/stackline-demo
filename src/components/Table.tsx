@@ -1,7 +1,8 @@
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { SalesRow } from "../mocks";
 import { FC } from "react";
-import { ItemComponent } from "../App";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 const columnHelper = createColumnHelper<SalesRow>();
 
@@ -38,12 +39,19 @@ const columns = [
   }),
 ]
 
-const Table: FC<ItemComponent> = ({ item }) => {
+const Table: FC = () => {
+  const sales = useSelector((state: RootState) => state.products.selected?.sales);
   const table = useReactTable({
-    data: item.sales,
+    data: sales || [],
     columns,
     getCoreRowModel: getCoreRowModel()
   })
+
+  if (!sales) {
+    // TODO: put in a skeleton
+    return <div> No item!</div>
+  }
+
   return (
     <div className="bg-white p-5 shadow rounded-lg">
 
